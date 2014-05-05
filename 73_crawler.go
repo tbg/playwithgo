@@ -13,9 +13,6 @@ type Fetcher interface {
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
 func Crawl(url string, depth int, fetcher Fetcher, done chan bool) {
-	// TODO: Fetch URLs in parallel.
-	// TODO: Don't fetch the same URL twice.
-	// This implementation doesn't do either:
 	var subdone = make(chan bool)
 	defer func() {
 		fmt.Printf("Done with %s\n", url)
@@ -71,7 +68,7 @@ func (f fakeFetcher) Fetch(url string) (string, []string, error) {
 	return "", nil, fmt.Errorf("not found: %s", url)
 }
 
-var urlCache = map[string]bool{}
+var urlcache = map[string]bool{}
 
 // fetcher is a populated fakeFetcher.
 var fetcher = fakeFetcher{
